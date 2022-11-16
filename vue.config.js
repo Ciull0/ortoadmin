@@ -16,7 +16,7 @@ module.exports = {
   lintOnSave: false,
   ///...other vue-cli plugin options...
   pwa: {
-    name: 'Tasky',
+    name: 'Notes',
     themeColor: '#4DBA87',
     msTileColor: '#000000',
     appleMobileWebAppCapable: 'yes',
