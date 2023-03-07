@@ -18,7 +18,7 @@
       type="list-item-two-line,list-item-two-line,list-item-two-line"
       v-if="!inited"
     />
-    <v-card v-if="inited" flat>
+    <v-card v-if="inited && thereIsNote" flat>
       <v-text-field 
         label="Pianta"
         placeholder="Inserisci il nome della pianta"
@@ -26,20 +26,22 @@
       <v-range-slider
         label="Seminatura"
         :step="1"
+        :ticks="seasons"
         min="0"
         max="11"
-        :ticks="seasons"
-        :model-value="[0, 1]"
-        show-ticks="always"
-        thumb-label="always"
-        tick-size="4"
+        :model-value="editing.planting_time"
+        show-ticks = "true"
         v-model="editing.planting_time"
        >
         <template v-slot:thumb-label="{ modelValue }">
-          <span>{{ getSeason(modelValue) }}</span>
+          <v-icon theme="dark" :icon="season(modelValue)"></v-icon>
         </template>
       </v-range-slider>
       <MarkdownEditor @save="save" v-model="editing.text" :embedded="true" />
+    </v-card>
+    <v-card v-if="inited && !thereIsNote">
+      <v-card-title>Ancora Nessuna Pianta</v-card-title>
+      <v-card-subtitle>Inserisci la tua prima pianta aprendo il menu laterale</v-card-subtitle>
     </v-card>
   </v-container>
 </template>
@@ -57,7 +59,7 @@ export default {
       this.editing.tags.__ob__.dep.notify();
     },
     save: async function () {
-      console.log('aaaaaaaaaaaaa')
+      console.log('save', this.seasons, this.editing);
       this.showSuccess("Saving note");
       let created = this.insertOrUpdate("note", this.editing);
       if (!created.hasError) {
@@ -70,24 +72,28 @@ export default {
     load: async function () {
       this.inited = true;
     },
-    getSeason: function (value){
-      console.log(value);
-      return this.seasons[value]
+    season (val) {
+      return this.seasons[val]
     }
   },
 
   mounted: async function () {
+    let _this = this;
     this.listen("notes:changed", this, async function (sender, data) {
       console.log("received", data);
       sender.inited = false;
-      sender.editing = (await sender.get("note", data._id)).data;
-      sender.load();
+      if(data){
+        _this.thereIsNote = true;
+        sender.editing = (await sender.get("note", data._id)).data;
+        sender.load();
+      }
     });
   },
 
   data: () => ({
     editing: {},
     inited: false,
+    thereIsNote: false,
     seasons: {
         0: 'Jenuary',
         1: 'February',
