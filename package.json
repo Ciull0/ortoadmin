@@ -10,7 +10,7 @@
     "@vue/cli": "^5.0.8",
     "axios": "^1.1.3",
     "core-js": "^3.6.5",
-    "crudit": "^1.0.6",
+    "crudit": "^1.1.5",
     "element-tiptap": "^1.27.1",
     "html-webpack-plugin": "^5.5.0",
     "mongodb": "^4.11.0",

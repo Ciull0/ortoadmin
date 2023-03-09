@@ -1,64 +1,29 @@
 <template>
   <div>
-    <v-md-editor
-      v-model="value"
-      height="400px"
-      v-if="mode != 'preview'"
-      mode="edit"
-      :left-toolbar="toolbar"
-      @save="save"
-      @change="change"
-      ref="editor"
-    ></v-md-editor>
-    <v-md-preview :text="value" v-if="mode == 'preview'"></v-md-preview>
+    <el-tiptap 
+    v-model="content" 
+    :extensions="extensions"
+    @save="save"
+    @change="change"
+     />
   </div>
 </template>
 
 <script>
-import VueMarkdownEditor, { xss } from "@kangc/v-md-editor";
-//import VMdPreviewHtml from '@kangc/v-md-editor';
-import "@kangc/v-md-editor/lib/style/base-editor.css";
-import vuepressTheme from "@kangc/v-md-editor/lib/theme/vuepress.js";
-import "@kangc/v-md-editor/lib/theme/style/vuepress.css";
-
-import VMdPreview from "@kangc/v-md-editor/lib/preview";
-
-import githubTheme from "@kangc/v-md-editor/lib/theme/github.js";
-import "@kangc/v-md-editor/lib/theme/style/github.css";
-
-// highlightjs
-import hljs from "highlight.js";
-
-VMdPreview.use(githubTheme, {
-  Hljs: hljs,
-});
-
-import createTodoListPlugin from "@kangc/v-md-editor/lib/plugins/todo-list/index";
-import "@kangc/v-md-editor/lib/plugins/todo-list/todo-list.css";
-
-VueMarkdownEditor.use(createTodoListPlugin());
-
-import createTipPlugin from "@kangc/v-md-editor/lib/plugins/tip/index";
-import "@kangc/v-md-editor/lib/plugins/tip/tip.css";
-
-VueMarkdownEditor.use(createTipPlugin());
-
-import createEmojiPlugin from "@kangc/v-md-editor/lib/plugins/emoji/index";
-import "@kangc/v-md-editor/lib/plugins/emoji/emoji.css";
-
-VueMarkdownEditor.use(createEmojiPlugin());
-// Prism
-import Prism from "prismjs";
-// highlight code
-import "prismjs/components/prism-json";
-
-import enUS from "@kangc/v-md-editor/lib/lang/en-US";
-
-VueMarkdownEditor.lang.use("en-US", enUS);
-
-VueMarkdownEditor.use(vuepressTheme, {
-  Prism,
-});
+import {
+  // necessary extensions
+  Doc,
+  Text,
+  Paragraph,
+  Heading,
+  Bold,
+  Underline,
+  Italic,
+  Strike,
+  ListItem,
+  BulletList,
+  OrderedList,
+} from 'element-tiptap';
 
 export default {
   name: "MarkdownEditor",
@@ -82,22 +47,13 @@ export default {
   //   event: 'input'
   // },
   async created() {
-    if (this.mode == "simple") {
-      this.toolbar =
-        "undo redo clear | h bold italic strikethrough quote | ul ol  hr";
-    } else {
-      this.toolbar =
-        "undo redo clear | h bold italic strikethrough quote | ul ol  hr | link  tip todo-list emoji";
-    }
-
-    if (!this.embedded) {
-      this.toolbar = this.toolbar + " | save";
-    }
+    
   },
-  async mounted() {},
+  async mounted() {
+    this.content = this.value;
+  },
   components: {
-    "v-md-editor": VueMarkdownEditor,
-    "v-md-preview": VMdPreview,
+    
   },
   methods: {
     timeout() {
@@ -118,7 +74,24 @@ export default {
   },
   data: () => ({
     saved: true,
-    toolbar: "",
+    extensions: [
+        new Doc(),
+        new Text(),
+        new Paragraph(),
+        new Heading({ level: 5 }),
+        new Bold({ bubble: true }), // render command-button in bubble menu.
+        new Underline({ bubble: true, menubar: false }), // render command-button in bubble menu but not in menubar.
+        new Italic(),
+        new Strike(),
+        new ListItem(),
+        new BulletList(),
+        new OrderedList(),
+      ],
+      // editor's content
+      content: `
+        <h1>Ciao!</h1>
+        <p>Scrivi qui la tua ricetta!</p>
+      `,
   }),
 };
 </script>

@@ -26,15 +26,16 @@
       <v-range-slider
         label="Seminatura"
         :step="1"
-        :ticks="seasons"
+        :tick-size="4"
+        :thumb-label="true"
+        :value="[0,11]"
         min="0"
         max="11"
         :model-value="editing.planting_time"
-        show-ticks = "true"
         v-model="editing.planting_time"
        >
-        <template v-slot:thumb-label="{ modelValue }">
-          <v-icon theme="dark" :icon="season(modelValue)"></v-icon>
+        <template v-slot:thumb-label="modelValue">
+          {{season(modelValue.value)}}
         </template>
       </v-range-slider>
       <MarkdownEditor @save="save" v-model="editing.text" :embedded="true" />
@@ -73,6 +74,7 @@ export default {
       this.inited = true;
     },
     season (val) {
+      console.log('aaaa', val)
       return this.seasons[val]
     }
   },
@@ -94,20 +96,20 @@ export default {
     editing: {},
     inited: false,
     thereIsNote: false,
-    seasons: {
-        0: 'Jenuary',
-        1: 'February',
-        2: 'March',
-        3: 'April',
-        4: 'May',
-        5: 'June',
-        6: 'July',
-        7: 'August',
-        8: 'Settembre',
-        9: 'Ottobre',
-        10: 'Novembre',
-        11: 'Dicembre'
-      }
+    seasons: [
+        'Jenuary',
+        'February',
+        'March',
+        'April',
+        'May',
+        'June',
+        'July',
+        'August',
+        'Settembre',
+        'Ottobre',
+        'Novembre',
+        'Dicembre'
+      ]
   }),
 };
 </script>
