@@ -2,11 +2,11 @@
   <v-container>
     <v-row class="text-center">
       <v-col>
-        <h1>login</h1>
+        <h1>Accedi alle tue Piante!</h1>
         <v-form>
           <v-text-field v-model="username" type="text" label="login" />
           <v-text-field v-model="password" type="password" label="Password" />
-          <v-btn @click="save" block>Save</v-btn>
+          <v-btn @click="save" block>Accedi</v-btn>
         </v-form>
       </v-col>
     </v-row>
@@ -14,9 +14,9 @@
     <v-row class="text-center">
       <v-col>
         <v-subheader>
-          Not an user?
+          Non sei registrato?
           <a href="#" @click="$router.push({ name: 'register' })"
-            >Register</a
+            >Registrati</a
           ></v-subheader
         >
       </v-col>

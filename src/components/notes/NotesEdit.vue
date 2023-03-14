@@ -23,7 +23,7 @@
         label="Pianta"
         placeholder="Inserisci il nome della pianta"
         v-model="editing.title" />
-      <v-card style="margin-bottom: 1rem; padding: 0 1rem;">
+      <v-card style="margin-bottom: 1rem">
         <v-card-title>Tempistiche</v-card-title>
         <v-range-slider
           label="Serra"
@@ -37,6 +37,7 @@
           max="11"
           :model-value="editing.greenhouse_time"
           v-model="editing.greenhouse_time"
+          style="margin: 1rem;"
         >
           <template v-slot:thumb-label="modelValue">
             {{season(modelValue.value)}}
@@ -54,6 +55,7 @@
           max="11"
           :model-value="editing.planting_time"
           v-model="editing.planting_time"
+          style="margin: 1rem;"
         >
           <template v-slot:thumb-label="modelValue">
             {{season(modelValue.value)}}
@@ -71,6 +73,7 @@
           max="11"
           :model-value="editing.harvesting_time"
           v-model="editing.harvesting_time"
+          style="margin: 1rem;"
         >
           <template v-slot:thumb-label="modelValue">
             {{season(modelValue.value)}}

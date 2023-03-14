@@ -8,8 +8,8 @@
     <v-navigation-drawer v-model="drawer" absolute left temporary width="80%">
       <v-list-item>
         <v-list-item-content>
-          <v-list-item-title class="text-h6"> Notes </v-list-item-title>
-          <v-list-item-subtitle> Personal notes manager </v-list-item-subtitle>
+          <v-list-item-title class="text-h6"> Piante </v-list-item-title>
+          <v-list-item-subtitle> Il tuo diario agricolo </v-list-item-subtitle>
         </v-list-item-content>
       </v-list-item>
 
