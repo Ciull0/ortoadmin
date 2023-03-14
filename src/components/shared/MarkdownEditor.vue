@@ -1,12 +1,9 @@
 <template>
-  <div>
-    <el-tiptap 
+  <el-tiptap 
     v-model="content" 
     :extensions="extensions"
-    @save="save"
-    @change="change"
-     />
-  </div>
+    @onTransaction="change"
+  />
 </template>
 
 <script>
@@ -22,7 +19,7 @@ import {
   Strike,
   ListItem,
   BulletList,
-  OrderedList,
+  OrderedList
 } from 'element-tiptap';
 
 export default {
@@ -64,13 +61,9 @@ export default {
     },
     change(text, html) {
       this.saved = false;
-      this.$emit("input", text);
-    },
-    save(text, html) {
-      this.saved = true;
-      this.$emit("save", text);
-      setTimeout(this.timeout, 10000);
-    },
+      console.log('change', this.content)
+      this.$emit("input", this.content);
+    }
   },
   data: () => ({
     saved: true,
@@ -79,13 +72,13 @@ export default {
         new Text(),
         new Paragraph(),
         new Heading({ level: 5 }),
-        new Bold({ bubble: true }), // render command-button in bubble menu.
-        new Underline({ bubble: true, menubar: false }), // render command-button in bubble menu but not in menubar.
+        new Bold(), // render command-button in bubble menu.
+        new Underline(), // render command-button in bubble menu but not in menubar.
         new Italic(),
         new Strike(),
         new ListItem(),
         new BulletList(),
-        new OrderedList(),
+        new OrderedList()
       ],
       // editor's content
       content: `

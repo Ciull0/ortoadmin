@@ -24,7 +24,6 @@
           <v-list-item outlined v-for="note in notes" :key="note._id" @click="change(note)">
             <v-list-item-content class="text-left">
               <v-list-item-title v-text="note.title"></v-list-item-title>
-              <v-list-item-subtitle v-text="note.subtitle"></v-list-item-subtitle>
             </v-list-item-content>
 
             <v-list-item-action>
@@ -75,6 +74,9 @@ export default {
       }
     },
     change: async function (note) {
+      if(note){
+        this.close();
+      }
       this.send("notes:changed", note);
     },
     load: async function () {

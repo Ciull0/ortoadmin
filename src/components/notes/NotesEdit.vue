@@ -23,22 +23,72 @@
         label="Pianta"
         placeholder="Inserisci il nome della pianta"
         v-model="editing.title" />
-      <v-range-slider
-        label="Seminatura"
-        :step="1"
-        :tick-size="4"
-        :thumb-label="true"
-        :value="[0,11]"
-        min="0"
-        max="11"
-        :model-value="editing.planting_time"
-        v-model="editing.planting_time"
-       >
-        <template v-slot:thumb-label="modelValue">
-          {{season(modelValue.value)}}
-        </template>
-      </v-range-slider>
-      <MarkdownEditor @save="save" v-model="editing.text" :embedded="true" />
+      <v-card style="margin-bottom: 1rem; padding: 0 1rem;">
+        <v-card-title>Tempistiche</v-card-title>
+        <v-range-slider
+          label="Serra"
+          :step="1"
+          :ticks="true"
+          :tick-size="4"
+          :thumb-label="true"
+          :thumb-size="60"
+          :value="[0,11]"
+          min="0"
+          max="11"
+          :model-value="editing.greenhouse_time"
+          v-model="editing.greenhouse_time"
+        >
+          <template v-slot:thumb-label="modelValue">
+            {{season(modelValue.value)}}
+          </template>
+        </v-range-slider>
+        <v-range-slider
+          label="Semina"
+          :step="1"
+          :ticks="true"
+          :tick-size="4"
+          :thumb-label="true"
+          :thumb-size="60"
+          :value="[0,11]"
+          min="0"
+          max="11"
+          :model-value="editing.planting_time"
+          v-model="editing.planting_time"
+        >
+          <template v-slot:thumb-label="modelValue">
+            {{season(modelValue.value)}}
+          </template>
+        </v-range-slider>
+        <v-range-slider
+          label="Raccolta"
+          :step="1"
+          :ticks="true"
+          :tick-size="4"
+          :thumb-label="true"
+          :thumb-size="60"
+          :value="[0,11]"
+          min="0"
+          max="11"
+          :model-value="editing.harvesting_time"
+          v-model="editing.harvesting_time"
+        >
+          <template v-slot:thumb-label="modelValue">
+            {{season(modelValue.value)}}
+          </template>
+        </v-range-slider>
+      </v-card>
+      <v-card style="margin-bottom: 1rem;">
+        <v-card-title>Preparazione</v-card-title>
+        <MarkdownEditor v-model="editing.planting_instructions" :embedded="true" />
+      </v-card>
+      <v-card style="margin-bottom: 1rem;">
+        <v-card-title>Ricette</v-card-title>
+        <MarkdownEditor v-model="editing.cooking_instructions" :embedded="true" />
+      </v-card>
+      <v-card style="margin-bottom: 1rem;">
+        <v-card-title>Note & Appunti</v-card-title>
+        <MarkdownEditor v-model="editing.notes" :embedded="true" />
+      </v-card>
     </v-card>
     <v-card v-if="inited && !thereIsNote">
       <v-card-title>Ancora Nessuna Pianta</v-card-title>
@@ -60,7 +110,6 @@ export default {
       this.editing.tags.__ob__.dep.notify();
     },
     save: async function () {
-      console.log('save', this.seasons, this.editing);
       this.showSuccess("Saving note");
       let created = this.insertOrUpdate("note", this.editing);
       if (!created.hasError) {
@@ -74,7 +123,6 @@ export default {
       this.inited = true;
     },
     season (val) {
-      console.log('aaaa', val)
       return this.seasons[val]
     }
   },
