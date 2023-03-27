@@ -74,9 +74,6 @@ export default {
       }
     },
     change: async function (note) {
-      if(note){
-        this.close();
-      }
       this.send("notes:changed", note);
     },
     load: async function () {

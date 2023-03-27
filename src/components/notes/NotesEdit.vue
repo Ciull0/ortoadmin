@@ -133,8 +133,8 @@ export default {
   mounted: async function () {
     let _this = this;
     this.listen("notes:changed", this, async function (sender, data) {
-      console.log("received", data);
       sender.inited = false;
+      _this.inited = true;
       if(data){
         _this.thereIsNote = true;
         sender.editing = (await sender.get("note", data._id)).data;

@@ -26,13 +26,13 @@
         </v-row>
       </v-container>
 
-      <v-footer padless absolute top="-1px">
+      <v-footer padless absolute bottom="0">
         <v-col class="text-center" cols="12">
           <a @click.prevent="logout" href="#">Logout</a>
         </v-col>
         <v-col
           class="text-center caption"
-          style="ax-height: 21px; margin: 0px; padding: 0px; background: #eee"
+          style="max-height: 21px; margin: 0px; padding: 0px; background: #eee"
           cols="12"
         >
           {{ version }}
@@ -107,6 +107,12 @@ export default {
       sender.snackbar.open = true;
       console.log(data);
     });
+
+    this.listen("notes:changed", this, (sender, data)=>{
+      if(data){
+        this.drawer = false;
+      }
+    })
   },
   components: {},
   computed: {

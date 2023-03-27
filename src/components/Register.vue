@@ -32,7 +32,7 @@ export default {
         this.showError("Registrazione Fallita, per favore riprova!");
       } else {
         let user = response.data.data;
-        console.log(user);
+        localStorage.setItem("userToken", user.token);
         this.showSuccess("Ciao  " + user.name + "! Sei uno dei nostri, per favore esegui l'accesso!");
         this.$router.push({ name: "login" });
       }
