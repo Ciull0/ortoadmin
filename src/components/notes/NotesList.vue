@@ -62,7 +62,7 @@ export default {
       let newNote = {
         title: "note " + datestring,
         text: "",
-        deleted: false,
+        deleted: true,
       };
       this.showSaving("note saving");
       let created = await this.insertOrUpdate("note", newNote);

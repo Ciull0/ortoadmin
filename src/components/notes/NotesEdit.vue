@@ -3,10 +3,24 @@
     <v-btn
       color="secondary"
       elevation="4"
-      v-if="inited"
+      v-if="inited && !editing.deleted && thereIsNote"
       fab
       absolute
       top
+      right
+      @click="deleteNote"
+      style="z-index: 5; bottom: 34px"
+    >
+      <v-icon>mdi-delete</v-icon>
+    </v-btn>
+
+    <v-btn
+      color="primary"
+      elevation="4"
+      v-if="inited && thereIsNote"
+      fab
+      fixed
+      bottom
       right
       @click="save"
       style="z-index: 5; bottom: 34px"
@@ -82,15 +96,15 @@
       </v-card>
       <v-card style="margin-bottom: 1rem;">
         <v-card-title>Preparazione</v-card-title>
-        <MarkdownEditor v-model="editing.planting_instructions" :embedded="true" />
+        <MarkdownEditor v-model="editing.planting_instructions" :value="editing.planting_instructions" :embedded="true" />
       </v-card>
       <v-card style="margin-bottom: 1rem;">
         <v-card-title>Ricette</v-card-title>
-        <MarkdownEditor v-model="editing.cooking_instructions" :embedded="true" />
+        <MarkdownEditor v-model="editing.cooking_instructions" :value="editing.cooking_instructions" :embedded="true" />
       </v-card>
       <v-card style="margin-bottom: 1rem;">
         <v-card-title>Note & Appunti</v-card-title>
-        <MarkdownEditor v-model="editing.notes" :embedded="true" />
+        <MarkdownEditor v-model="editing.notes" :value="editing.notes" :embedded="true" />
       </v-card>
     </v-card>
     <v-card v-if="inited && !thereIsNote">
@@ -114,12 +128,40 @@ export default {
     },
     save: async function () {
       this.showSuccess("Saving note");
+      delete this.editing.deleted;
       let created = this.insertOrUpdate("note", this.editing);
       if (!created.hasError) {
         this.showSuccess("competed!");
         this.send("notes:edited", created);
       } else {
         this.showError(created.error);
+      }
+    },
+    deleteNote: async function(){
+      this.showSuccess('Eliminazione in corso');
+      let deleted = await this.remove('note', this.editing);
+      console.log('deleted', deleted);
+      if(!deleted.hasError){
+        this.showSuccess('Eliminata');
+        var d = new Date();
+        var datestring =
+          ("0" + d.getDate()).slice(-2) +
+          "-" +
+          ("0" + (d.getMonth() + 1)).slice(-2) +
+          "-" +
+          d.getFullYear() +
+          " " +
+          ("0" + d.getHours()).slice(-2) +
+          ":" +
+          ("0" + d.getMinutes()).slice(-2);
+        this.editing = {
+          title: "note " + datestring,
+          text: "",
+          deleted: true,
+        };
+        this.send("notes:edited", this.editing);
+      }else{
+        this.showError("C'è stato un errore nell'eliminazione")
       }
     },
     load: async function () {

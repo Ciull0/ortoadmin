@@ -51,10 +51,8 @@ Vue.mixin({
         return  this.simplifyResponse(  await this.apiCall(url,'PATCH',data,{collection: entity}));
   
       },
-      remove:  async function (entity, data){
-        
-        return  (await this.apiCall(url,'DELETE',params,{id: data._id,collection: entity})).status==200;
-  
+      remove:  async function (entity, data){        
+        return  (await this.apiCall(url,'DELETE',{},{id: data._id,collection: entity})).status==200;
       },
       get:  async function (entity, id){
         
